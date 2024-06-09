@@ -41,13 +41,6 @@ namespace neo4JGUI
             pictureBoxNames.Add(circle.Name);
         }
 
-        /*private void pictureBox3_Click(object sender, EventArgs e)
-        {
-            clicked = true;
-            clickedPictureBox = rhomb;
-            pictureBoxNames.Add(rhomb.Name);
-        }*/
-
         private void Form1_Click(object sender, EventArgs e)
         {
             if (clickedPictureBox == pictureBox4)
@@ -240,45 +233,24 @@ namespace neo4JGUI
             List<Point> textBoxCenters = new List<Point>();
             List<string> textBoxValuesList = new List<string>();
             Dictionary<Point,string> textBoxValues = new Dictionary<Point,string>();
-            //List<Point[]> pictureBoxCorners = new List<Point[]>();
-            //List<Point[]> textBoxCorners = new List<Point[]>();
             foreach (var line in lines)
             {
                 lineStarts.Add(new Point(line.Item1.X,line.Item1.Y));
                 lineEnds.Add(new Point(line.Item2.X, line.Item2.Y));
-                // lineCenters.Add(new Point((line.Item1.X + line.Item2.X) / 2, (line.Item1.Y + line.Item2.Y) / 2));
             }
 
-            //int index = 0;
             foreach (var control in addedControls)
             {
                 if (control is PictureBox pictureBox)
                 {
                     Point pictureBoxCenter = new Point(pictureBox.Left + pictureBox.Width / 2, pictureBox.Top + pictureBox.Height / 2);
                     pictureBoxCenters.Add(pictureBoxCenter);
-
-                    /*Point[] corners = {
-                        new Point(pictureBox.Left, pictureBox.Top),
-                        new Point(pictureBox.Right, pictureBox.Top),
-                        new Point(pictureBox.Left, pictureBox.Bottom),
-                        new Point(pictureBox.Right, pictureBox.Bottom)
-                    };
-                    pictureBoxCorners.Add(corners);
-
-                    index++;*/
                 }
                 else if (control is System.Windows.Forms.TextBox textBox)
                 {
                     Point textBoxCenter = new Point(textBox.Left + textBox.Width / 2, textBox.Top + textBox.Height / 2);
                     textBoxCenters.Add(textBoxCenter);
                     textBoxValuesList.Add(textBox.Text);
-                    //Point[] corners = {
-                        //new Point(textBox.Left, textBox.Top),
-                        //new Point(textBox.Right, textBox.Top),
-                        //new Point(textBox.Left, textBox.Bottom),
-                        //new Point(textBox.Right, textBox.Bottom)
-                    //};
-                    // textBoxCorners.Add(corners);
                 }
             }
 
@@ -289,9 +261,7 @@ namespace neo4JGUI
                 i++;
             }
 
-            //int indexInPictureBoxes = 0;
             bool done = false;
-            //var firstPictureBox = pictureBoxCenters[0];
             var prevPictureBox = pictureBoxCenters[0];
             var previous = pictureBoxCenters[0];
             Dictionary<Point, bool> visited = new Dictionary<Point, bool>();
@@ -307,7 +277,6 @@ namespace neo4JGUI
                 bool foundLineStart = false;
                 foreach (Point p in lineStarts)
                 {   
-                    // double distanceToCenter = CalculateDistance(p, previous);
                     Point closestPoint = FindClosestPoint(pictureBoxCenters, p, visited_line_starts);
                     if(closestPoint.X != -1 && closestPoint.Y != -1)
                     {
@@ -316,14 +285,12 @@ namespace neo4JGUI
                         if (closestTextBox.X != -1 && closestTextBox.Y != -1)
                         {
                             visited_textboxes[closestTextBox] = true;
-                            // for in textBoxCenters to find index in textBoxValues or use dictonary
                             txt = textBoxValues[closestTextBox];
                             string result = neo4jStructure.FirstOrDefault(x => x == txt);
                             string result1 = exclude.FirstOrDefault(x => x == txt);
                             if (result == null && result1 == null)
                             {
                                 neo4jStructure.Add(txt);
-                                //MessageBox.Show("Found begin !" + txt);
                                 string entity = txt[0]+":";
                                 if (entity != "R:")
                                 {
@@ -347,11 +314,9 @@ namespace neo4JGUI
                 {
                     foreach (Point p in lineEnds)
                     {
-                        // double distanceToCenter = CalculateDistance(p, prevPictureBox);
                         Point closestPoint = FindClosestPoint(pictureBoxCenters, p, visited_line_ends);
                         if (closestPoint.X != -1 && closestPoint.Y != -1)
                         {
-                            // MessageBox.Show("Found end !");
                             visited_line_ends[p] = true;
                             previous = prevPictureBox;
                             prevPictureBox = closestPoint;
@@ -362,14 +327,12 @@ namespace neo4JGUI
                             if (closestTextBox.X != -1 && closestTextBox.Y != -1)
                             {
                                 visited_textboxes[closestTextBox] = true;
-                                // for in textBoxCenters to find index in textBoxValues or use dictonary
                                 txt = textBoxValues[closestTextBox];
                                 string result = neo4jStructure.FirstOrDefault(x => x == txt);
                                 string result1 = exclude.FirstOrDefault(x => x == txt);
                                 if (result == null && result1 == null)
                                 {
                                     neo4jStructure.Add(txt);
-                                    //MessageBox.Show("Found begin !" + txt);
                                     string entity = txt[0] + ":";
                                     if (entity != "R:") {
                                         string promptValue = Prompt.ShowDialog("Value: ", "Enter value for " + txt.Replace(entity, ""));
@@ -396,17 +359,6 @@ namespace neo4JGUI
                 }
             }
 
-            //DisplayOperationHistory();
-            //string combinedString1 = string.Join(",", neo4jStructure.ToArray());
-            //string combinedString2 = string.Join(",", neo4jValues.ToArray());
-            //MessageBox.Show(combinedString1);
-            //MessageBox.Show(combinedString2);
-            /*string resultNeo4jStructure = "";
-            for(int index = 0; index < neo4jValues.Count; index++)
-            {
-                resultNeo4jStructure += neo4jStructure[index] + " -> " + neo4jValues[index] + "\n";
-            }
-            MessageBox.Show(resultNeo4jStructure);*/
             string cypherQuery = ""; bool isRelation = false;
             for (int index = 0; index < neo4jStructure.Count; index++)
             {
@@ -424,13 +376,7 @@ namespace neo4JGUI
                 {
                     if (neo4jValues[index] != "")
                     {
-                        if (isRelation == false)
-                        {
-                            //if (index != neo4jValues.Count - 1)
-                            cypherQuery += neo4jStructure[index].Replace("P:", "") + ": '" + neo4jValues[index] + "', ";
-                            //else
-                                //cypherQuery += neo4jStructure[index].Replace("P:", "") + ": '" + neo4jValues[index] + "'";
-                        }
+                        if (isRelation == false) cypherQuery += neo4jStructure[index].Replace("P:", "") + ": '" + neo4jValues[index] + "', ";
                     } else
                     {
                         isRelation = true;
@@ -439,7 +385,6 @@ namespace neo4JGUI
             }
             cypherQuery = cypherQuery.Remove(cypherQuery.Length - 2);
             cypherQuery += "});";
-            //add relations sequentially
             List<string> entities = new List<string>();
             List<string> relations = new List<string>();
             List<string> properties = new List<string>();
@@ -449,7 +394,6 @@ namespace neo4JGUI
             {   
                 if (neo4jStructure[index].StartsWith("N:"))
                 {
-                    //found entity
                     entities.Add(neo4jValues[index]);
                     indexEntity++;
                 }
@@ -466,34 +410,10 @@ namespace neo4JGUI
                         properties.Add(neo4jStructure[index].Replace("P:","")+":['"+neo4jValues[index]+"']");
                         index++;
                     }
-                    //found relation
-                    //MessageBox.Show(neo4jStructure[index].Replace("R:","")+": "+neo4jValues[index+1]);
-                    //string relation = neo4jStructure[index].Replace("R:", "");
-                    //cypherQuery += $"CREATE (:{neo4jStructure[index - 2].Replace("N:", "")} {{name: '{neo4jValues[index - 2]}'}})-[:{relation}]->(:" +
-                    //$"{neo4jStructure[index - 1].Replace("N:", "")} {{name: '{neo4jValues[index - 1]}'}});";
                     index--;
                 }
             }
-            /*if (relations.Count > 0) cypherQuery += "CREATE ";
-            for(int index = 0; index < relations.Count; index++)
-            {
-                int indexBeginEntity = relationBeginEntityIndex[index];
-                string entity1 = entities[indexBeginEntity];
-                string entity2 = entities[indexBeginEntity + 1];
-                string property = "";
-                try
-                {
-                    property = properties[index];
-                } catch{}
-                if(property != "")
-                {
-                    cypherQuery += "(" + entity1 + ")-[:" + relations[index] + " {" + property + "}]->(" + entity2 + "),";
-                } else
-                {
-                    cypherQuery += "(" + entity1 + ")-[:" + relations[index] + "]->(" + entity2 + "),";
-                }
-            }*/
-            //cypherQuery = cypherQuery.Remove(cypherQuery.Length - 1);
+            
             char[] alphabet = new char[26];
             for (int j = 0; j < 26; j++)
             {
@@ -521,20 +441,16 @@ namespace neo4JGUI
                     if (property != "")
                     {
                         cypherQuery += "MERGE(" + entity1 + ")-[" + alphabet[indexAlphabet++] + ":" + relations[index] + " {" + property + "}]->(" + entity2 + ") ";
-                        //cypherQuery += "(" + entity1 + ")-[:" + relations[index] + " {" + property + "}]->(" + entity2 + "),";
                     }
                     else
                     {
-                        //cypherQuery += "(" + entity1 + ")-[:" + relations[index] + "]->(" + entity2 + "),";
                         cypherQuery += "MERGE(" + entity1 + ")-[" + alphabet[indexAlphabet++] + ":" + relations[index] + "]->(" + entity2 + ") ";
                     }
                 }
                 cypherQuery = cypherQuery.Remove(cypherQuery.Length - 1);
-                //cypherQuery += ";";
             }
             cypherQuery += ";";
             MessageBox.Show(cypherQuery);
-            //_ = connectToNeo4j(cypherQuery);
             var cypherQueries = cypherQuery.Split(";");
             for(int z = 0; z < cypherQueries.Count() - 1; z++)
             {
@@ -577,39 +493,6 @@ namespace neo4JGUI
                 await session.CloseAsync();
             }
         }
-        /* private void DisplayOperationHistory()
-        {
-            List<string> historyMessages = new List<string>();
-
-            foreach (var line in lines)
-            {
-                string message = $"Line from ({line.Item1.X}, {line.Item1.Y}) to ({line.Item2.X}, {line.Item2.Y})";
-                historyMessages.Add(message);
-            }
-            int index = 0;
-            foreach (var control in addedControls)
-            {
-                if (control is PictureBox pictureBox)
-                {
-                    string message = $"{pictureBoxNames[index]} at ({pictureBox.Location.X}, {pictureBox.Location.Y})";
-                    historyMessages.Add(message);
-                    index++;
-                }
-                else if (control is System.Windows.Forms.TextBox textBox)
-                {
-                    string message = $"TextBox at ({textBox.Location.X}, {textBox.Location.Y})";
-                    historyMessages.Add(message);
-                }
-            }
-
-            if (historyMessages.Count == 0)
-            {
-                historyMessages.Add("No relationships recorded.");
-            }
-
-            string historyMessage = string.Join(Environment.NewLine, historyMessages);
-            MessageBox.Show(historyMessage, "Operation History", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }*/
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -724,7 +607,6 @@ namespace neo4JGUI
                                     Location = new Point(x1, y1),
                                     Size = new Size(100, 30)
                                 };
-                                // textBox.BringToFront();
                                 Controls.Add(textBox);
                                 addedControls.Add(textBox);
                                 Controls.SetChildIndex(textBox, 0);
@@ -735,7 +617,6 @@ namespace neo4JGUI
 
                 // Redraw lines
                 Invalidate();
-                //MessageBox.Show("Shapes and lines loaded from file successfully!", "Load Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
