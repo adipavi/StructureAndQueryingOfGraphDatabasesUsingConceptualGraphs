@@ -1,0 +1,38 @@
+Line 514, 365 to 439, 330
+Line 341, 214 to 336, 110
+Line 284, 89 to 167, 256
+Line 166, 391 to 170, 540
+Line 637, 382 to 806, 390
+Line 894, 362 to 1006, 243
+Line 1118, 282 to 1179, 386
+Line 1313, 472 to 1422, 528
+Line 546, 432 to 531, 579
+Line 632, 665 to 879, 744
+Line 1047, 743 to 1196, 749
+Line 1359, 766 to 1482, 778
+rectangle 517, 331
+TextBox 615, 317 N:Person
+circle 307, 220
+TextBox 387, 219 has
+rectangle 296, 31
+TextBox 426, 107 P:name
+circle 106, 271
+TextBox 207, 261 filter
+rectangle 92, 561
+TextBox 188, 547 C:='Adrian'
+circle 838, 363
+TextBox 924, 358 isSource
+rectangle 1012, 185
+TextBox 1108, 165 R:DIRECTED,ACTED_IN
+circle 1176, 404
+TextBox 1255, 402 isTarget
+rectangle 1449, 511
+TextBox 1541, 477 N:Movie
+circle 496, 591
+TextBox 575, 587 has
+rectangle 894, 698
+TextBox 988, 674 P:name1
+circle 1217, 715
+TextBox 1302, 707 return
+rectangle 1499, 763
+TextBox 1526, 745 out

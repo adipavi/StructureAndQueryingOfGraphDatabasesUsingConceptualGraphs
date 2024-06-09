@@ -1,0 +1,9 @@
+Line 312, 239 to 460, 261
+Line 478, 343 to 352, 442
+Line 268, 306 to 287, 359
+Line 318, 330 to 439, 323
+rectangle 183, 193
+circle 479, 273
+rhomb 253, 369
+TextBox 221, 384 G
+TextBox 550, 248 Text

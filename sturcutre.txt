@@ -1,0 +1,54 @@
+Line 343, 504 to 216, 363
+Line 342, 597 to 225, 693
+Line 292, 289 to 427, 268
+Line 313, 769 to 438, 763
+Line 453, 564 to 618, 495
+Line 456, 569 to 605, 617
+Line 710, 424 to 840, 338
+Line 727, 667 to 866, 738
+Line 908, 286 to 750, 168
+Line 761, 126 to 961, 90
+Line 966, 384 to 1089, 468
+Line 914, 700 to 1049, 602
+Line 1228, 496 to 1377, 563
+Line 1190, 642 to 1342, 602
+Line 1418, 569 to 1540, 391
+Line 1406, 564 to 1376, 381
+Line 1545, 268 to 1529, 131
+Line 1342, 265 to 1353, 123
+rectangle 331, 519
+circle 150, 240
+circle 176, 708
+rectangle 449, 243
+rectangle 455, 746
+TextBox 431, 512 N:Person
+TextBox 556, 742 P:born
+TextBox 513, 238 P:name
+TextBox 159, 239 hasOne
+TextBox 170, 726 isOptional
+circle 639, 445
+circle 627, 595
+TextBox 669, 437 isSource
+TextBox 713, 590 isSource
+rectangle 858, 316
+TextBox 929, 313 R:ACTED_IN
+rectangle 875, 705
+TextBox 947, 693 R:DIRECTED
+circle 610, 77
+TextBox 671, 74 hasOne
+rectangle 966, 68
+TextBox 1033, 66 P:role
+circle 1116, 446
+circle 1072, 587
+TextBox 1174, 444 isTarget
+TextBox 1169, 586 isTarget
+rectangle 1390, 573
+TextBox 1443, 561 N:Movie
+circle 1306, 266
+circle 1510, 270
+TextBox 1358, 264 hasOne
+TextBox 1572, 268 hasOne
+rectangle 1279, 45
+rectangle 1488, 38
+TextBox 1354, 40 P:title
+TextBox 1555, 35 P:released
