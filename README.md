@@ -90,6 +90,195 @@ The graphical representation is converted into a Cypher `MATCH` query and execut
 
 Results are returned and displayed by the application.
 
+## Visual Graph Notation
+
+The application uses different geometric shapes to visually represent the components of a graph database. Together, these shapes form a conceptual representation that can be translated into Neo4j/Cypher.
+
+### Rectangle — Node / Entity
+
+A **rectangle** represents a **node (entity)** in the graph database.
+
+For example:
+
+```text
+┌──────────────┐
+│    Person    │
+└──────────────┘
+```
+
+or:
+
+```text
+┌──────────────┐
+│    Movie     │
+└──────────────┘
+```
+
+These correspond to Neo4j nodes such as:
+
+```cypher
+(:Person)
+(:Movie)
+```
+
+Nodes represent the main objects or entities stored in the graph.
+
+---
+
+### Circle — Property
+
+A **circle** represents a **property** belonging to a node or relationship.
+
+For example, a `Person` node can have the properties `name` and `born`:
+
+```text
+       (name)
+          |
+     ┌────────┐
+     │ Person │
+     └────────┘
+          |
+       (born)
+```
+
+This can correspond to a Neo4j node such as:
+
+```cypher
+(:Person {
+    name: "Adrian",
+    born: 2000
+})
+```
+
+Properties contain information describing an entity or relationship.
+
+---
+
+### Rhombus / Diamond — Relationship
+
+A **rhombus (diamond)** represents a **relationship** between two nodes.
+
+For example:
+
+```text
+┌────────┐       ◇ DIRECTED ◇       ┌────────┐
+│ Person │ -----------------------> │ Movie  │
+└────────┘                          └────────┘
+```
+
+This represents the Neo4j graph pattern:
+
+```cypher
+(:Person)-[:DIRECTED]->(:Movie)
+```
+
+Another example is:
+
+```text
+Person ── ◇ ACTED_IN ◇ ──> Movie
+```
+
+which corresponds to:
+
+```cypher
+(:Person)-[:ACTED_IN]->(:Movie)
+```
+
+Relationships describe how two entities are connected.
+
+A relationship can also have its own properties. For example, an `ACTED_IN` relationship could contain a `role` property.
+
+---
+
+### Arrows — Connections and Direction
+
+**Arrows connect the graphical elements and define how they are related.**
+
+Most importantly, arrows between nodes and relationships indicate the **direction of a graph relationship**.
+
+For example:
+
+```text
+Person ──> DIRECTED ──> Movie
+```
+
+means:
+
+```cypher
+(:Person)-[:DIRECTED]->(:Movie)
+```
+
+The direction is important because Neo4j relationships are directed.
+
+For example:
+
+```text
+Person ──> DIRECTED ──> Movie
+```
+
+expresses that a person directed a movie, rather than the movie directing the person.
+
+Arrows are also used by the application to connect nodes with their properties and other components of the conceptual representation. The program analyses these connections to determine how the graphical diagram should be translated into Cypher.
+
+---
+
+## Example
+
+A conceptual graph such as:
+
+```text
+             (name)
+                |
+                v
+          ┌──────────┐
+          │  Person  │
+          └──────────┘
+                |
+                v
+         ◇ DIRECTED ◇
+                |
+                v
+          ┌──────────┐
+          │  Movie   │
+          └──────────┘
+                |
+                v
+             (title)
+```
+
+represents:
+
+* a `Person` node;
+* a `name` property belonging to the person;
+* a `DIRECTED` relationship;
+* a `Movie` node;
+* a `title` property belonging to the movie.
+
+Conceptually, this describes:
+
+```text
+Person(name) ── DIRECTED ──> Movie(title)
+```
+
+and can be translated into a Cypher graph pattern such as:
+
+```cypher
+MATCH (p:Person)-[:DIRECTED]->(m:Movie)
+RETURN p.name, m.title
+```
+
+### Shape Summary
+
+| Shape             | Represents               | Example                     |
+| ----------------- | ------------------------ | --------------------------- |
+| Rectangle         | Node / Entity            | `Person`, `Movie`           |
+| Circle            | Property                 | `name`, `born`, `title`     |
+| Rhombus / Diamond | Relationship             | `DIRECTED`, `ACTED_IN`      |
+| Arrow             | Connection and direction | `Person → DIRECTED → Movie` |
+
+This visual notation allows a graph database structure or query to be constructed graphically instead of writing the complete Cypher representation manually.
+
+
 ## Diagram Notation
 
 The application uses prefixes to distinguish the different components of a conceptual graph.
